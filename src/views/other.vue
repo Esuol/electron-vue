@@ -11,7 +11,9 @@
     <br /> <br />
     <button @click="printPDF">打印到PDF</button>
     <br /> <br />
-    <button @click="screenHot">创建屏幕截图</button> <span style="margin-left:15px;font-size:14px">{{msg}}</span>
+    <button @click="screenHot">创建屏幕截图</button>
+    <br /> <br />
+    <span style="font-size:14px;color:red">{{answer}}</span>
   </div>
 </template>
 
@@ -32,7 +34,8 @@ export default {
     return {
       inputValue: '',
       placeholder: '',
-      msg: ''
+      msg: '',
+      answer: ''
     }
   },
   methods: {
@@ -41,29 +44,33 @@ export default {
 
       ipcRenderer.on('got-app-path',(event, path) => {
         console.log(path)
+        this.answer = path
       })
     },
     getVersion () {
       // console.log(electronVersion)
       const electronVersion = process.versions.electron
       const message =  `当前electron的版本是${electronVersion}`
+      this.answer = message
       console.log(message)
     },
     getScreen () {
       const size = screen.getPrimaryDisplay().size
       const message = `当前屏幕是: ${size.width}px x ${size.height}px`
+      this.answer = message
       console.log(message)
     },
     copy () {
       if(this.inputValue !== '') this.inputValue = ''
       this.placeholder = '已复制! 请在这里执行粘贴.'
-       clipboard.writeText('Electron 示例!')
+      clipboard.writeText('Electron 示例!')
     },
     printPDF () {
       ipcRenderer.send('print-to-pdf')
 
       ipcRenderer.on('wrote-pdf', (event, path) => {
         const message = `PDF保存到：${path}`
+        this.answer = message
         console.log(message)
       })
     },
@@ -85,7 +92,7 @@ export default {
                 shell.openExternal(`file://${screenshotPath}`)
 
                 const message = `截图保存到: ${screenshotPath}`
-                this.msg = message
+                this.answer = message
               })
             }
           })
