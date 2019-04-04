@@ -1,9 +1,10 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/system">system</router-link>
+      <router-link to="/">主页</router-link> |
+      <router-link to="/about">本地用户界面</router-link> |
+      <router-link to="/system">系统</router-link> |
+      <router-link to="/form">窗体</router-link>
       <h1>Electron-vue-demo</h1>
     </div>
     <router-view/>

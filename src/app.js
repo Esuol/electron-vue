@@ -1,5 +1,6 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, globalShortcut, dialog} = require('electron')
+const electron = require('electron')
 
 const debug = /--debug/.test(process.argv[2])
 
@@ -67,6 +68,10 @@ function initialize () {
         detail: '按下了全局注册的快捷键绑定',
         buttons: ['好的']
       })
+    })
+
+    electron.powerMonitor.on('unlock-screen', () => {
+      console.log('unlock-screen')
     })
 
   }
