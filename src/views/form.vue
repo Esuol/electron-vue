@@ -10,17 +10,25 @@
     <br /> <br />
     <button @click="reloadWindow">进程挂起后重载窗体</button>
     <br /> <br />
+    <button @click="getPic">截屏</button>
+    <br /> <br />
+    <div class="imageWrapper" ref="imageWrapper" style="width:300px;margin:0 auto">
+        <img class="real_pic" :src="dataURL" style="width:100%;border: 1px solid #ccc;" />
+    </div>
     <span style="font-size:14px;color:red">{{answer}}</span>
+    <br /> <br />
   </div>
 </template>
 
 <script>
 const { BrowserWindow, app, dialog } = window.require('electron').remote
+import html2canvas from 'html2canvas'
 
 export default {
   data () {
     return {
-      answer: ''
+      answer: '',
+      dataURL: ''
     }
   },
   methods: {
@@ -88,6 +96,14 @@ export default {
       win.on('close', () => { win = null })
       win.loadURL(hangWinPath)
       win.show()
+    },
+    getPic () {
+       html2canvas(document.body,{
+        backgroundColor: null
+    }).then((canvas) => {
+        let dataURL = canvas.toDataURL("image/png");
+        this.dataURL = dataURL;
+    });
     }
   }
 }
